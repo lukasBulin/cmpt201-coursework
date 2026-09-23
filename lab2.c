@@ -31,8 +31,15 @@ int main() {
       execlp(saveptr, saveptr, NULL);
       // If exec reaches here, we know exec failed
       printf("Exec failure\n");
+      exit(EXIT_FAILURE);
     } else {
-      waitpid(pid, NULL, 0);
+      pid_t result = waitpid(pid, NULL, 0);
+
+      if (result == -1) {
+        perror("waitpid");
+        free(saveptr);
+        exit(EXIT_FAILURE);
+      }
     }
   }
 }
