@@ -13,6 +13,7 @@ int main() {
   while (1) {
 
     printf("Enter programs to run.\n");
+    printf("> ");
     n = getline(&saveptr, &len, stdin);
     if (n == -1) {
       perror("getline has failed");
@@ -27,10 +28,10 @@ int main() {
     if (pid == -1) {
       printf("Fork failed!\n");
     } else if (pid == 0) {
-      printf("CHILD:\n");
-      execl(saveptr, saveptr, NULL);
+      execlp(saveptr, saveptr, NULL);
+      // If exec reaches here, we know exec failed
+      printf("Exec failure\n");
     } else {
-      printf("PARENT:\n");
       waitpid(pid, NULL, 0);
     }
   }
